@@ -3,24 +3,27 @@ import requests
 import json
 
 url = 'https://www.metacritic.com/browse/games/release-date/new-releases/pc/metascore'
-response = requests.get(url)
+response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'} )
 content = BeautifulSoup(response.content, "html.parser")
-games = content.findAll('div', attrs={"class": ["product_title"]})
+games = content.find_all('a', 'title')
 score = content.findAll('div', attrs={"class": ["metascore_w"]})
 
-
-gameNameList = []
 for i in games:
-  gameDict = {
-    "title": i.find('a').string.strip()
-  }
-  gameNameList.append(gameDict)
+  print(i)
 
-completedGameList = []
-for i in range(len(gameNameList)):
-  completedGameDict = {**gameNameList[i], "score": score[i].text, "hi": "hi"}
-  completedGameList.append(completedGameDict)
+#gameNameList = []
+#for i in games:
+ # gameDict = {
+  #  "title": i.find('a').string.strip()
+  #}
+  #gameNameList.append(gameDict)
+
+#completedGameList = []
+#for i in range(len(gameNameList)):
+ # completedGameDict = {**gameNameList[i], "score": score[i].text, "hi": "hi"}
+  #completedGameList.append(completedGameDict)
+  #print(gameNameList)
 
 
-with open('gameData.json', 'w') as outfile:
-  json.dump(completedGameList, outfile)
+#with open('gameData.json', 'w') as outfile:
+ # json.dump(completedGameList, outfile)
