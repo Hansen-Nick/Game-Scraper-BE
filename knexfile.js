@@ -2,10 +2,17 @@
 
 module.exports = {
   development: {
-    client: "postgres",
-    connection: "postgres://127.0.0.1/gamescraper",
+    client: "pg",
+    connection: "postgres://postgres:12345@127.0.0.1/gamescraper",
+    useNullAsDefault: true,
+    migrations: {
+      tableName: "migrations",
+      directory: "./db/migrations",
+    },
+    seeds: {
+      directory: "./db/seeds",
+    },
   },
-
   production: {
     client: "postgresql",
     connection: {

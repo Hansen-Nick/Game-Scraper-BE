@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
 const gameData = require("./gameData.json");
+const helpers = require("./helpers/helpers");
 
 const server = express();
 server.use(express.json());
@@ -14,16 +15,27 @@ server.get("/", (req, res) => {
 });
 
 server.get("/gameData", (req, res) => {
-  res.status(200).json(gameData);
-  // python.stdout.on("data", (data) => {
-  //   console.log("python game data...", data);
-  //   dataSet.push(gameData);
-  // });
+  helpers
+    .find()
+    .then((results) => {
+      res.status(200).json(results);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
 
-  // python.on("close", (code) => {
-  //   console.log(`child process close all stdio with code ${code}`);
-  //   res.send(dataSet);
-  // });
+server.post("/addGame", (req, res) => {
+  const { game, score } = req.body;
+  helpers
+    .addGame(game, score)
+    .then((response) => {
+      // console.log(response);
+      res.status(201).json({ Success: "Game Added!" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
 });
 
 module.exports = server;
