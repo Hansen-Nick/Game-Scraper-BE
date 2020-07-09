@@ -2,7 +2,6 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
-const pythonFunction = require("./middleware");
 const gameData = require("./gameData.json");
 
 const server = express();
@@ -14,7 +13,7 @@ server.get("/", (req, res) => {
   res.status(200).json({ api: "Welcome to the GameFinder!" });
 });
 
-server.get("/gameData", pythonFunction, (req, res) => {
+server.get("/gameData", (req, res) => {
   res.status(200).json(gameData);
   // python.stdout.on("data", (data) => {
   //   console.log("python game data...", data);
